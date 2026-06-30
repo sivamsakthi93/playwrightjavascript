@@ -13,5 +13,6 @@ console.log(d.getHours())
 console.log(d.getMinutes())
 console.log(d.getSeconds())
 console.log(d.getDay())
+console.log(d.getDate())
 
 
