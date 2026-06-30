@@ -48,7 +48,7 @@ console.log(d)
 param('admin',123)
 ananymous();
 arrowfun();
-
+//i am 
 
 // instance creation or object calling or instance calling or class calling
 // syntx--> let a=new nameoftheclass();
