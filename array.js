@@ -49,4 +49,28 @@ console.log(arr)
 let as4=arr.unshift(5)
 console.log(as4)
 console.log(arr)
-
+//slice--> returns a shallow copy of a portion of an array into a new array object selected from start to end (end not included) where start and end represent the index of items in that array. The original array will not be modified.
+let as6=arr.slice(1,3)
+console.log(as6)
+//includes--> determines whether an array includes a certain value among its entries, returning true or false as appropriate.
+let as7=arr.includes(1)
+console.log(as7)
+//reverse--> reverses an array in place. The first array element becomes the last, and the last array element becomes the first.
+let as8=arr.reverse()
+console.log(as8)
+//indexOf--> returns the first index at which a given element can be found in the array, or -1 if it is not present.
+let as9=arr.indexOf(1)
+console.log(as9)
+//lastIndexOf--> returns the last index at which a given element can be found in the array, or -1 if it is not present. The array is searched backwards, starting at fromIndex.
+let as10=arr.lastIndexOf(1)
+console.log(as10)   
+//join--> joins all elements of an array into a string.
+let as11=arr.join("-")
+console.log(as11)
+//filter--> creates a new array with all elements that pass the test implemented by the provided function.
+let as12=arr.filter((value)=> value>2)
+console.log(as12)
+//map--> creates a new array populated with the results of calling a provided function on every element in the calling array.
+let as13=arr.map((value)=> value*2)
+console.log(as13)
+console.log(arr)
