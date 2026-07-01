@@ -67,3 +67,9 @@ let j=20;
 console.log(i>j && i<j)
 console.log(i>j || i<j)
 console.log(!(i>j))
+
+//ternary operator is use for evaluating a condition and returns a value based on the condition
+let k=10;
+let l=20;
+let m=k>l?"k is greater":"l is greater";
+console.log(m)
