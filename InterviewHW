@@ -74,10 +74,8 @@ for (let x of fgh) {
 }
 console.log(dup); // [6, 3]
 
-//reverse order
-let arr = [10, 2, 33, 4];
-
 // Ascending order
+let arr = [10, 2, 33, 4];
 arr.sort((a, b) => a - b);
 console.log(arr); // [2, 4, 10, 33]
 
