@@ -19,7 +19,7 @@ for (let i = 0; i <= 6; i++) {
         continue;
     }
   console.log(i);
-}
+}6
 
 //for loop is use for iterating a block of code a number of times
 //it is used to iterate over the elements of an array or a collection
