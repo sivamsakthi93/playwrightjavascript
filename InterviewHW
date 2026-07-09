@@ -1,0 +1,84 @@
+// let a = 4;
+// //increment pattern printing
+// for (let i=1; i<=a; i++){
+//     console.log("*".repeat(i));
+// }
+// //decerement pattern printing
+// for(let i=a; i>=1; i--){
+//     console.log("*".repeat(i));
+// }
+
+// //number increament pattern
+// let b = 4;
+// for(let i=1; i<=b; i++){
+//     let row = "";
+//     for (j=1; j<=i; j++){
+//         row= row+j;
+//     }
+//     console.log(row)
+// }
+// //number decrement pattern
+// for(let i=b; i>=1; i--){
+//     let row = "";
+//     for (j=1; j<=i; j++){
+//         row= row+j;
+//     }
+//     console.log(row)
+// }
+
+// //odd number in 100
+// let d = 100;
+// for(let i=1; i<=d; i++){
+//     if(i%2 !=0){
+//         console.log(i)
+//     }
+// }
+
+// //even number in 100
+// let e = 100;
+// for(let i=1; i<=e; i++){
+//     if(i%2 ==0){
+//         console.log(i)
+//     }
+// }
+
+// //fibnanic series
+// let n = 10;
+// const series = [0,1]
+// for (let i=2; i<n; i++){
+//     series.push(series[i-1]+series[i-2]);
+// }
+// console.log(series);
+
+// //print straight all elements in array
+// let dots = [4,6,2,8,0]
+// for (let x in dots){
+//     console.log(dots[x]);
+// }
+// //reverse order
+// let dot = [6,3,1,8,2]
+// for (let x = dot.length - 1; x >= 0; x--) {
+//     console.log(dot[x]);
+// }
+//duplicate number in the array
+let fgh = [3, 6, 8, 6, 9, 3, 1];
+let seen = {};
+let dup = [];
+
+for (let x of fgh) {
+    if (seen[x]) {
+        dup.push(x);
+    } else {
+        seen[x] = true;
+    }
+}
+console.log(dup); // [6, 3]
+
+// Ascending order
+let arr = [10, 2, 33, 4];
+arr.sort((a, b) => a - b);
+console.log(arr); // [2, 4, 10, 33]
+
+// Descending order
+arr.sort((a, b) => b - a);
+console.log(arr); // [33, 10, 4, 2]
