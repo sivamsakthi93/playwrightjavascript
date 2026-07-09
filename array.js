@@ -1,4 +1,4 @@
-//array is the container which can hold multiple values in a single variable
+///array is the container which can hold multiple values in a single variable
 // ther is no length limit for array
 // index starts from 0
 // lenght starts from 1
