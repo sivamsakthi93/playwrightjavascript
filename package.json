@@ -1,0 +1,23 @@
+{
+  "name": "playwrightjavascript",
+  "version": "1.0.0",
+  "description": "playwright javascript",
+  "main": "array.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sivamsakthi93/playwrightjavascript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sivamsakthi93/playwrightjavascript/issues"
+  },
+  "homepage": "https://github.com/sivamsakthi93/playwrightjavascript#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1"
+  }
+}
