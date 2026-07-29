@@ -35,3 +35,12 @@ test("checkbox", async({page})=>{
         await page.waitForTimeout(1000);
     }
 });
+
+test("dropdown", async({page})=>{
+    await page.goto("https://testautomationpractice.blogspot.com/")
+    await page.waitForTimeout(1000);
+    await page.locator('#country').selectOption('canada');
+    //await page.locator('#country').selectOption({value:'NCR'});
+    //await page.locator('#react-select-3-input').selectOption({index:1});
+    await page.waitForTimeout(1000);
+});

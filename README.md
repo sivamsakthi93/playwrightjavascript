@@ -9,7 +9,7 @@ first step to learn javascript
 node filename.js
 ex:node array.js
 
-// playwright installation 
+// playwright installation in current project folder
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 npm init playwright@latest
 //commands to run the testcases
