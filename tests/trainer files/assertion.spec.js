@@ -4,7 +4,7 @@ test('asssert', async({page})=>{
     await page.goto('https://testautomationpractice.blogspot.com/');
     // url() is used to fetch the current page url
     let u=await page.url();
-    // validate the url
+    // validate the urls
     await expect(page).toHaveURL('https://testautomationpractice.blogspot.com/');
     // validate the title
     await expect(page).toHaveTitle('Automation Testing Practice');
