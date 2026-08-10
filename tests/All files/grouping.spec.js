@@ -12,7 +12,7 @@ test.afterEach(async()=>{
     console.log('this is aftereach hook')
 })
 
-test.describe.only('group1',()=>{
+test.describe('group1',()=>{
 
 test('test1', async({page})=>{
     console.log('this is test1');

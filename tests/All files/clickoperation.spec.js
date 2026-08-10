@@ -14,7 +14,7 @@ test('doubleclick',async({page})=>{
     
 })
 
-test.only('darg and drop',async({page})=>{
+test('darg and drop',async({page})=>{
     await page.goto('http://www.dhtmlgoodies.com/scripts/drag-drop-custom/demo-drag-drop-3.html');
     const s=await page.locator("#box2");
     const d=await page.locator("#box106");

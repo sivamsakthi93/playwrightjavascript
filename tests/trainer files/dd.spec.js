@@ -13,7 +13,7 @@ test('dd' ,async ({page})=>{
     await page.waitForTimeout(5000)
 
 })
-test.only('m_dd' ,async ({page})=>{
+test('m_dd' ,async ({page})=>{
     await page.goto('https://testautomationpractice.blogspot.com/');
     
     await page.locator('#colors').selectOption([{index: 1},{index: 2}])
