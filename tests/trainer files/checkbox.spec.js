@@ -22,7 +22,7 @@ test('check box', async({page})=>{
         await page.waitForTimeout(5000)
     }
 })
-test.only('radio button', async({page})=>{
+test('radio button', async({page})=>{
     await page.goto('https://testautomationpractice.blogspot.com/');
     await page.locator('#female').check();
     await page.waitForTimeout(5000)

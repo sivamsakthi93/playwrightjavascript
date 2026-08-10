@@ -1,7 +1,7 @@
 import{test,expect} from '@playwright/test'
 
 
-test.only('tag name', async({page})=>{
+test('tag name', async({page})=>{
     await page.goto('https://www.facebook.com/login.php');
    let tc= await page.locator("//*[text()='Forgotten password?']").textContent();
    console.log(tc)
