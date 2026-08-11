@@ -1,0 +1,787 @@
+PLAYWRIGHT + JAVASCRIPT INTERVIEW PREPARATION
+================================================
+
+PART 1 — PLAYWRIGHT
+
+1. What is Playwright?
+----------------------
+Answer:
+Playwright is an open-source end-to-end automation framework developed by Microsoft. 
+It is mainly used for automating web applications across Chromium, Firefox and WebKit browsers. 
+It supports multiple programming languages including JavaScript, TypeScript, Python, Java and .NET. 
+It provides features such as auto-waiting, browser contexts, parallel execution, network interception, 
+screenshots, videos, tracing and API testing.
+
+2. Why Playwright over Selenium?
+--------------------------------
+Answer:
+Playwright provides several modern features out of the box, such as auto-waiting, browser contexts, 
+built-in support for multiple tabs and pages, network interception, tracing and easy parallel execution. 
+It also provides modern locator APIs and web-first assertions, which can make tests more reliable and easier to maintain.
+
+Selenium is a mature and widely used framework, but for modern web applications 
+I find Playwright's built-in synchronization and browser-context architecture very convenient.
+
+3. What are the advantages of Playwright?
+------------------------------------------
+- Auto-waiting
+- Cross-browser support
+- Chromium, Firefox and WebKit
+- Multiple tabs/pages
+- Browser contexts
+- Parallel execution
+- Network interception
+- API testing
+- Screenshots and videos
+- Trace Viewer
+- Web-first assertions
+- Built-in test runner
+- Mobile/device emulation
+
+4. What is auto-waiting?
+------------------------
+Answer:
+Playwright automatically waits for elements to become ready before performing actions such as click or fill. 
+It checks conditions such as whether the element is attached, visible, stable and enabled. This reduces the need for hard-coded waits.
+
+Example:
+await page.getByRole('button', { name: 'Login' }).click();
+
+Normally, you don't need:
+await page.waitForTimeout(5000);
+
+5. What are locators?
+---------------------
+Answer:
+Locators are Playwright's mechanism for identifying elements on a webpage. They provide automatic waiting and retry behavior, 
+making element interactions more reliable.
+
+Examples:
+page.getByRole('button', { name: 'Login' });
+page.getByText('Welcome');
+page.getByLabel('Username');
+page.getByPlaceholder('Enter username');
+page.getByTestId('login-button');
+page.locator('#username');
+
+6. locator() vs getByRole()
+---------------------------
+Answer:
+locator() can use CSS selectors, XPath and other selector strategies.
+
+Example:
+page.locator('#username');
+
+getByRole() identifies elements based on their accessible role.
+
+Example:
+page.getByRole('button', { name: 'Login' });
+
+I prefer user-facing locators like getByRole, getByLabel and getByText 
+where appropriate because they represent how users interact with the application and are generally more maintainable.
+
+7. CSS vs XPath
+---------------
+CSS:
+page.locator('#username');
+
+XPath:
+page.locator('//input[@id="username"]');
+
+Answer:
+I prefer stable user-facing locators or test IDs first. If those are not available, 
+I can use CSS or XPath depending on the application. I avoid overly complex XPath because it can be difficult to maintain.
+
+8. How do you handle dynamic elements?
+--------------------------------------
+Answer:
+I avoid hard-coded waits and use stable locators and Playwright's auto-waiting mechanism. If an element has dynamic attributes, 
+I identify it using stable properties such as role, text, label, test ID or a reliable parent-child relationship.
+
+Example:
+await page.getByRole('button', { name: 'Submit' }).click();
+
+For filtering:
+await page.locator('.product')
+    .filter({ hasText: 'Laptop' })
+    .getByRole('button', { name: 'Buy' })
+    .click();
+
+9. How do you handle multiple tabs?
+------------------------------------
+Example:
+const newPagePromise = context.waitForEvent('page');
+
+await page.getByText('Open New Tab').click();
+
+const newPage = await newPagePromise;
+
+await newPage.waitForLoadState();
+
+console.log(await newPage.title());
+
+Answer:
+I wait for the page event before performing the action that opens the new tab, then capture the newly created page object and 
+continue automation on it.
+
+10. How do you handle iframes?
+------------------------------
+Example:
+const frame = page.frameLocator('#paymentFrame');
+
+await frame.getByLabel('Card Number').fill('123456789');
+
+Answer:
+For iframe elements, I use Playwright's frameLocator() and then interact with elements inside the frame.
+
+11. How do you handle alerts/dialogs?
+--------------------------------------
+Example:
+page.on('dialog', async dialog => {
+    console.log(dialog.message());
+    await dialog.accept();
+});
+
+For dismiss:
+page.on('dialog', async dialog => {
+    await dialog.dismiss();
+});
+
+12. How do you upload a file?
+-----------------------------
+Example:
+await page.locator('input[type="file"]')
+    .setInputFiles('testdata/sample.pdf');
+
+13. How do you download a file?
+--------------------------------
+Example:
+const downloadPromise = page.waitForEvent('download');
+
+await page.getByText('Download').click();
+
+const download = await downloadPromise;
+
+await download.saveAs('downloads/report.pdf');
+
+
+
+
+14. How do you take screenshots?
+--------------------------------
+Example:
+await page.screenshot({
+    path: 'screenshots/home.png'
+});
+
+Full page:
+await page.screenshot({
+    path: 'screenshots/home.png',
+    fullPage: true
+});
+
+Element screenshot:
+await page.locator('#logo').screenshot({
+    path: 'screenshots/logo.png'
+});
+
+15. How do you record videos?
+-----------------------------
+Configure video in the Playwright configuration or browser context.
+
+Example:
+use: {
+    video: 'on'
+}
+
+Then Playwright records test execution videos.
+
+
+PART 2 — PLAYWRIGHT FRAMEWORK
+
+16. What are fixtures?
+----------------------
+Answer:
+Fixtures provide the environment and resources required by tests. Playwright has built-in fixtures such as page, browser, 
+context and request. We can also create custom fixtures for reusable setup and test data.
+
+Example:
+test('login test', async ({ page }) => {
+    await page.goto('https://example.com');
+});
+
+Here page is a built-in fixture.
+
+17. What are hooks?
+-------------------
+Hooks are used for setup and cleanup.
+
+test.beforeAll(async () => {
+    // runs once before all tests
+});
+
+test.beforeEach(async ({ page }) => {
+    // runs before every test
+});
+
+test.afterEach(async ({ page }) => {
+    // runs after every test
+});
+
+test.afterAll(async () => {
+    // runs once after all tests
+});
+
+18. What is Page Object Model?
+------------------------------
+Answer:
+Page Object Model is a design pattern where page-specific locators and actions are maintained in separate classes or files. 
+Tests then call reusable methods instead of directly interacting with locators.
+
+Example:
+class LoginPage {
+    constructor(page) {
+        this.page = page;
+        this.username = page.getByLabel('Username');
+        this.password = page.getByLabel('Password');
+        this.loginButton = page.getByRole('button', { name: 'Login' });
+    }
+
+    async login(username, password) {
+        await this.username.fill(username);
+        await this.password.fill(password);
+        await this.loginButton.click();
+    }
+}
+
+Test:
+const loginPage = new LoginPage(page);
+await loginPage.login('admin', 'password');
+
+19. Why use POM?
+----------------
+Answer:
+POM improves maintainability, reusability and readability. If a locator changes, 
+I can update it in one place instead of changing multiple test cases.
+
+20. What is Browser, Browser Context and Page?
+----------------------------------------------
+Think:
+Browser
+  ↓
+Browser Context
+  ↓
+Page
+
+Browser:
+Represents the browser instance.
+
+Browser Context:
+An isolated browser session. Each context can have its own cookies, local storage, session storage and authentication state.
+
+Page:
+Represents a browser tab.
+
+Answer:
+A browser can contain multiple isolated browser contexts, and each context can contain one or more pages.
+
+21. How do you handle authentication?
+--------------------------------------
+Answer:
+One common approach is using storageState. You can authenticate once and reuse the authentication state.
+
+Example:
+await context.storageState({
+    path: 'auth.json'
+});
+
+Then configure:
+use: {
+    storageState: 'auth.json'
+}
+
+This avoids logging in before every test.
+
+22. What is storageState?
+-------------------------
+Answer:
+storageState allows us to save and reuse authentication-related browser state such as cookies and local storage.
+ It is useful when we want to avoid repeating the login process for every test.
+
+23. How do you run tests in parallel?
+-------------------------------------
+Playwright Test supports parallel execution.
+
+Configuration:
+workers: 4
+
+You can also use:
+fullyParallel: true
+
+Answer:
+Playwright supports parallel test execution using workers. This can significantly reduce regression execution time, 
+provided tests are independent and thread-safe.
+
+24. How do you retry failed tests?
+----------------------------------
+Configuration:
+retries: 2
+
+This means Playwright can retry failed tests up to two times.
+
+25. How do you run a specific test?
+-----------------------------------
+npx playwright test login.spec.js
+
+Run by title:
+npx playwright test -g "Login test"
+
+26. How do you run headed mode?
+-------------------------------
+npx playwright test --headed
+
+Debug mode:
+npx playwright test --debug
+
+27. How do you run tests on different browsers?
+------------------------------------------------
+Example configuration:
+projects: [
+    {
+        name: 'chromium',
+        use: { browserName: 'chromium' }
+    },
+    {
+        name: 'firefox',
+        use: { browserName: 'firefox' }
+    },
+    {
+        name: 'webkit',
+        use: { browserName: 'webkit' }
+    }
+]
+
+28. How do you configure Playwright?
+-------------------------------------
+Main configuration file:
+playwright.config.js
+
+It can contain:
+- Browser projects
+- Base URL
+- Timeout
+- Retries
+- Workers
+- Reporter
+- Screenshots
+- Videos
+- Trace
+- Authentication
+- Headless/headed settings
+
+Example:
+export default defineConfig({
+    use: {
+        baseURL: 'https://example.com',
+        screenshot: 'only-on-failure',
+        trace: 'on-first-retry'
+    }
+});
+
+29. How do you generate reports?
+--------------------------------
+Playwright has a built-in HTML reporter.
+
+npx playwright show-report
+
+Configuration:
+reporter: 'html'
+
+You can also integrate other reporting tools depending on project requirements.
+
+30. How do you integrate Playwright with Jenkins?
+--------------------------------------------------
+Answer:
+I would configure Jenkins to pull the latest code from Git, install dependencies, install Playwright browsers if required, 
+execute the Playwright test command, and publish the generated test report as a build artifact.
+
+Typical pipeline:
+Git
+ ↓
+Jenkins
+ ↓
+npm install
+ ↓
+Playwright installation
+ ↓
+npx playwright test
+ ↓
+HTML/other report
+ ↓
+Publish report
+
+
+PART 3 — API TESTING
+
+31. Can Playwright perform API testing?
+---------------------------------------
+Yes. Playwright provides an API request fixture.
+
+Example:
+test('GET API', async ({ request }) => {
+    const response = await request.get('/users');
+
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+
+    console.log(body);
+});
+
+32. How do you perform POST?
+----------------------------
+Example:
+const response = await request.post('/users', {
+    data: {
+        name: 'Sivam',
+        job: 'Tester'
+    }
+});
+
+expect(response.status()).toBe(201);
+
+33. GET, POST, PUT, PATCH and DELETE?
+-------------------------------------
+GET    - Retrieve data
+POST   - Create data
+PUT    - Replace/update data
+PATCH  - Partially update data
+DELETE - Delete data
+
+
+PART 4 — JAVASCRIPT
+
+34. Difference between var, let and const?
+------------------------------------------
+var:
+Function scoped.
+
+let:
+Block scoped and can be reassigned.
+
+const:
+Block scoped and cannot be reassigned.
+
+Example:
+let age = 33;
+age = 34;
+
+const name = 'Sivam';
+// name = 'John';  // Error
+
+Interview answer:
+In modern JavaScript, I generally prefer const by default and use let when the value needs to be reassigned. 
+I avoid var unless there is a specific reason to use it.
+
+35. What is == vs ===?
+----------------------
+== performs type conversion.
+
+=== checks both value and type.
+
+Example:
+5 == '5'   // true
+5 === '5'  // false
+
+I generally prefer === because it avoids unexpected type coercion.
+
+36. null vs undefined
+---------------------
+undefined:
+A variable has been declared but has not been assigned a value.
+
+Example:
+let x;
+console.log(x); // undefined
+
+null:
+Explicitly represents an empty/no value.
+
+Example:
+let x = null;
+
+37. What is a Promise?
+----------------------
+Answer:
+A Promise represents the eventual completion or failure of an asynchronous operation.
+
+Three main states:
+Pending
+  ↓
+Fulfilled
+OR
+Rejected
+
+Example:
+const result = fetchData();
+
+result.then(data => {
+    console.log(data);
+});
+
+38. What is async/await?
+------------------------
+Answer:
+async/await provides a cleaner way to work with asynchronous operations and Promises.
+
+Example:
+async function login() {
+    const response = await fetchData();
+    console.log(response);
+}
+
+Playwright uses this heavily:
+await page.goto('https://example.com');
+await page.getByRole('button').click();
+
+Important:
+Most Playwright actions return Promises, so we use await to wait for them to complete.
+
+39. What is an arrow function?
+------------------------------
+Traditional:
+function add(a, b) {
+    return a + b;
+}
+
+Arrow:
+const add = (a, b) => {
+    return a + b;
+};
+
+Short form:
+const add = (a, b) => a + b;
+
+40. What is for...of?
+---------------------
+Used to iterate over values.
+
+Example:
+const fruits = ['Apple', 'Banana', 'Orange'];
+
+for (const fruit of fruits) {
+    console.log(fruit);
+}
+
+Output:
+Apple
+Banana
+Orange
+
+41. What is for...in?
+---------------------
+Used to iterate over keys/properties.
+
+Example:
+const user = {
+    name: 'Sivam',
+    age: 33
+};
+
+for (const key in user) {
+    console.log(key);
+}
+
+Output:
+name
+age
+
+Easy way to remember:
+of = values
+in = keys
+
+42. What is map()?
+------------------
+Used to create a new array by transforming every element.
+
+Example:
+const numbers = [1, 2, 3];
+
+const result = numbers.map(n => n * 2);
+
+console.log(result);
+
+Output:
+[2, 4, 6]
+
+43. What is filter()?
+---------------------
+Returns elements that satisfy a condition.
+
+Example:
+const numbers = [1, 2, 3, 4, 5];
+
+const result = numbers.filter(n => n > 2);
+
+console.log(result);
+
+Output:
+[3, 4, 5]
+
+44. What is find()?
+-------------------
+Returns the first matching element.
+
+Example:
+const numbers = [10, 20, 30];
+
+const result = numbers.find(n => n > 15);
+
+console.log(result);
+
+Output:
+20
+
+
+PART 5 — JAVASCRIPT CODING QUESTIONS
+
+45. Reverse a string
+--------------------
+const str = "Sivam";
+
+const reversed = str.split('').reverse().join('');
+
+console.log(reversed);
+
+Output:
+maviS
+
+46. Find largest number
+-----------------------
+const numbers = [10, 25, 5, 40, 15];
+
+const largest = Math.max(...numbers);
+
+console.log(largest);
+
+Output:
+40
+
+47. Remove duplicates
+---------------------
+const numbers = [1, 2, 2, 3, 3, 4];
+
+const unique = [...new Set(numbers)];
+
+console.log(unique);
+
+Output:
+[1, 2, 3, 4]
+
+48. Find duplicate elements
+---------------------------
+const numbers = [1, 2, 2, 3, 4, 4];
+
+const duplicates = numbers.filter(
+    (value, index) => numbers.indexOf(value) !== index
+);
+
+console.log([...new Set(duplicates)]);
+
+Output:
+[2, 4]
+
+49. Count character occurrences
+--------------------------------
+const str = "hello";
+
+const count = {};
+
+for (const char of str) {
+    count[char] = (count[char] || 0) + 1;
+}
+
+console.log(count);
+
+Result:
+{
+    h: 1,
+    e: 1,
+    l: 2,
+    o: 1
+}
+
+
+PART 6 — YOUR ROBOT FRAMEWORK EXPERIENCE → PLAYWRIGHT
+
+Your current experience:
+Robot Framework + Python + SeleniumLibrary + Browser Library
+
+Comparison:
+
+Robot Framework       → Playwright Test
+SeleniumLibrary       → Selenium-based browser automation
+Browser Library       → Playwright-based browser automation
+Keywords              → Functions/methods
+Variables              → JavaScript variables
+Setup/Teardown         → Hooks
+Resource files         → Modules/classes
+Test Suite             → Test files/projects
+Tags                   → test.describe / annotations / grep patterns
+Selenium WebDriver     → Playwright browser automation
+Selenium waits         → Playwright auto-waiting
+Page Objects           → Page Object Model
+Robot reports          → Playwright HTML report
+
+
+FINAL PREPARATION PRIORITY
+
+1. JavaScript async/await
+2. Playwright locators
+3. Auto-waiting
+4. Page Object Model
+5. Fixtures
+6. Hooks
+7. Browser / Context / Page
+8. Authentication and storageState
+9. API testing
+10. Parallel execution
+11. CI/CD
+12. JavaScript coding questions
+
+MOST IMPORTANT PLAYWRIGHT QUESTIONS TO PRACTICE
+
+1. What is Playwright?
+2. Why Playwright over Selenium?
+3. Advantages of Playwright
+4. What is auto-waiting?
+5. What are locators?
+6. locator() vs getByRole()
+7. CSS vs XPath
+8. Handling dynamic elements
+9. Multiple tabs
+10. Iframes
+11. Alerts/dialogs
+12. File upload
+13. File download
+14. Screenshots
+15. Video recording
+16. Fixtures
+17. Hooks
+18. Page Object Model
+19. Why POM?
+20. Browser vs Context vs Page
+21. Authentication
+22. storageState
+23. Parallel execution
+24. Retries
+25. Running specific tests
+26. Headed/debug mode
+27. Cross-browser execution
+28. Playwright configuration
+29. Reports
+30. Jenkins integration
+31. API testing
+32. GET/POST/PUT/PATCH/DELETE
+
+
